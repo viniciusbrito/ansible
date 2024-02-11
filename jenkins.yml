@@ -1,0 +1,27 @@
+#@Autor Vinicius Brito
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Get last Jenkins build
+      jenkins_last_build:
+        url: "{{ jenkins_url }}"
+        username: "{{ jenkins_user }}"
+        password: "{{ jenkins_password }}"
+        job_name: "{{ jenkins_job_name }}"
+      register: last_build_result
+
+    - debug:
+        var: last_build_result.last_build
+
+    - name: Query Last Jenkins build by Commit ID
+      jenkins_query_build:
+        url: "{{ jenkins_password }}"
+        username: "{{ jenkins_user }}"
+        password: "{{ jenkins_password }}"
+        job_name: "{{ jenkins_job_name }}"
+        commit_id: "{{ commit_id }}"
+      register: last_query_result
+
+    - debug:
+        var: last_query_result.build
